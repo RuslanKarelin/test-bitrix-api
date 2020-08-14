@@ -1,4 +1,4 @@
-# test-bitrix-api
+# test-bitrix-component-api
 Тестовое задание
 
 Пример запросов
