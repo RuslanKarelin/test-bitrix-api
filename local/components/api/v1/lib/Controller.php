@@ -51,6 +51,7 @@ class Controller
     {
         $hlblock = HighloadBlockTable::getById($this->HLBlockId)->fetch();
         $entity = HighloadBlockTable::compileEntity($hlblock);
+
         return $entity->getDataClass();
     }
 
@@ -72,6 +73,7 @@ class Controller
                 $arFieldsNew['params'][$newKey] = $value['VALUE'];
             }
         }
+
         return $arFieldsNew;
     }
 
@@ -93,8 +95,10 @@ class Controller
         }
 
         if ($enumFields = $propertyEnums->GetNext()) {
+
             return $enumFields["ID"];
         }
+
         return null;
     }
 
@@ -111,9 +115,11 @@ class Controller
         $this->HLBlockId = $arParams['HLBLOCK_ID'];
         $this->request = $request;
         $this->ApiV1 = $ApiV1;
-        if (!$this->iBlockId) {
+
+        if (!$this->iBlockId || !$this->HLBlockId) {
             throw new \InvalidArgumentException();
         }
+
         Loader::includeModule('iblock');
         Loader::includeModule("highloadblock");
     }
@@ -124,6 +130,7 @@ class Controller
         if (!empty($this->request['filter'])) {
             $filter['PROPERTY_TYPE_VALUE'] = $this->request['filter']['type'];
         }
+
         $res = CIBlockElement::GetList(
             [],
             $filter,
@@ -131,12 +138,14 @@ class Controller
             false,
             static::SELECTED_PROPERTIES
         );
+
         $offices = [];
         while ($element = $res->GetNextElement()) {
             $arProps = $element->GetProperties();
             $arFields = $element->GetFields();
             $offices['offices'][] = $this->prepareElement($arFields, $arProps);
         }
+
         $this->ApiV1->result = $offices;
     }
 
@@ -149,6 +158,7 @@ class Controller
             false,
             static::SELECTED_PROPERTIES
         );
+        
         if ($element = $res->GetNextElement()) {
             $arProps = $element->GetProperties();
             $arFields = $element->GetFields();

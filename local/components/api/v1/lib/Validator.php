@@ -18,11 +18,13 @@ class Validator
      */
     protected function checkToken()
     {
-        if (empty($this->status) &&
+        if (
+        	empty($this->status) &&
             (empty($_SERVER['HTTP_TOKEN']) || $_SERVER['HTTP_TOKEN'] !== $this->token)
         ) {
             $this->status = Loc::getMessage('CHECK_TOKEN');
         }
+
         return $this;
     }
 
@@ -31,11 +33,13 @@ class Validator
      */
     protected function checkMethod()
     {
-        if (empty($this->status) &&
+        if (
+        	empty($this->status) &&
             (empty($this->params['method']) || !in_array($this->params['method'], static::REQUIRED_METHODS))
         ) {
             $this->status = Loc::getMessage('CHECK_METHOD');
         }
+
         return $this;
     }
 
@@ -44,11 +48,13 @@ class Validator
      */
     protected function checkId()
     {
-        if (empty($this->status) &&
+        if (
+        	empty($this->status) &&
             (in_array($this->params['method'], static::METHOD_LIST_WITH_ID) && empty($this->params['id']))
         ) {
             $this->status = Loc::getMessage('CHECK_ID');
         }
+
         return $this;
     }
 
@@ -71,6 +77,7 @@ class Validator
                 }
             }
         }
+
         return $this;
     }
 
@@ -81,9 +88,9 @@ class Validator
      */
     public function __construct($params, string $token)
     {
+        if (empty($params)) die();
         $this->params = $params;
         $this->token = $token;
-        if (empty($this->params)) die();
     }
 
     /**
@@ -92,6 +99,7 @@ class Validator
     public function validate(): string
     {
         $this->checkToken()->checkMethod()->checkId()->checkRequiredProperties();
+
         return $this->status;
     }
 }
