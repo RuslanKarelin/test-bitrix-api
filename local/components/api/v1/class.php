@@ -42,7 +42,8 @@ class ApiV1 extends CBitrixComponent
 
     protected function response()
     {
-        echo json_encode(['status' => $this->status, 'result' => $this->result]);
+        header("Content-type: application/json; charset=utf-8");
+        die(json_encode(['status' => $this->status, 'result' => $this->result]));
     }
 
     /**
